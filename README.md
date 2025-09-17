@@ -16,13 +16,13 @@
     <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a> -->
 
-  <h3>Alugueis de carros</h3>
+  <h3>Aluguel de carros</h3>
   Trabalho de projeto de software
 </div>
 
 # 📖 Sobre
 
-Projeto para a criação para um gerencialmente alugueis de carros passado pelo professor João Aramuni da disciplina de Projeto de Software
+Projeto para a criação para um gerenciamento aluguel de carros passado pelo professor João Aramuni da disciplina de Projeto de Software
 
 # 💻 Como iniciar
 
