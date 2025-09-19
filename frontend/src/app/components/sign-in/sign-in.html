@@ -1,0 +1,9 @@
+<app-header></app-header>
+<div class="wrapper">
+	<form class="card" #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
+		<h2>Log In</h2>
+		<input type="text" name="email" ngModel required />
+		<input type="password" name="password" ngModel required />
+	</form>
+	<app-car-background />
+</div>

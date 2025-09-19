@@ -1,1 +1,27 @@
 /* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap');
+:root {
+    --primary-color: #E5E5E5;
+    --on-primary-color: #171717;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Figtree', sans-serif;
+}
+
+input {
+    font-family: 'Figtree', sans-serif;
+}
+
+body, html {
+    height: 100%;
+}
+
+fieldset {
+    border: none;
+    margin: 0;
+    padding: 0;
+}
