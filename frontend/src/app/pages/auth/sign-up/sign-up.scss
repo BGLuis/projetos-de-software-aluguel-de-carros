@@ -23,6 +23,11 @@
 .info {
     display: flex;
     flex-direction: row;
+    gap: 16px;
+
+    .right {
+        width: 100%;
+    }
 
     span {
         display: inline-block;

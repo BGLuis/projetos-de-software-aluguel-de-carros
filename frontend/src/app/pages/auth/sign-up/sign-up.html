@@ -6,8 +6,7 @@
 	<div class="info">
 		@if (currentStepIndex > 0) {
 		<div class="left" (click)="previousStep()">
-			<lucide-icon name="arrow-left"></lucide-icon>
-			<span>Voltar</span>
+			<lucide-icon name="arrow-left" size="48"></lucide-icon>
 		</div>
 		}
 		<div class="right">
@@ -79,10 +78,44 @@
 			<input type="text" name="complement" ngModel />
 		</label>
 	</fieldset>
-	} @else { }
+	} @else {
+	<fieldset>
+		<legend>Dados Profissionais</legend>
+		<label style="width: calc((100% - 16px) / 2)">
+			<span>Profissão:</span>
+			<input type="text" name="profession" ngModel required />
+		</label>
+		<span style="width: calc((100% - 16px) / 2)"></span>
+		<label style="width: calc((100% - 16px) / 2)">
+			<span>Entidade(s) Empregadora(s):</span>
+			<input type="text" name="company" ngModel required />
+		</label>
+		<label style="width: calc((100% - 16px) / 2)">
+			<span>Rendimento(s) Autodeferido(s):</span>
+			<input type="text" name="monthlyIncome" ngModel required />
+		</label>
+	</fieldset>
+	<fieldset>
+		<legend>Escolha Sua Senha</legend>
+		<span>Usaremos o e-mail fornecido na Identificação Pessoal</span>
+		<label style="width: calc((100% - 16px) / 2)">
+			<span>Senha:</span>
+			<input type="password" name="password" ngModel required />
+		</label>
+		<label style="width: calc((100% - 16px) / 2)">
+			<span>Confirme Sua Senha:</span>
+			<input type="password" name="confirmPassword" ngModel required />
+		</label>
+		<span
+			>Use pelo menos 8 caracteres, incluindo uma letra e um número.</span
+		>
+	</fieldset>
+	}
 	<button>
-		{{buttonInfo[currentStepIndex].name}}
-		<lucide-icon name="{{buttonInfo[currentStepIndex].icon}}"></lucide-icon>
+		{{stepInfo[currentStepIndex].button.text}}
+		<lucide-icon
+			name="{{stepInfo[currentStepIndex].button.icon}}"
+		></lucide-icon>
 	</button>
 </form>
 <app-car-background />

@@ -1,13 +1,15 @@
-import {
-	Component,
-	ComponentRef,
-	ViewChild,
-	ViewContainerRef,
-} from '@angular/core';
+import { Component } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { LucideAngularModule } from 'lucide-angular';
 import { HeaderComponent } from '../../../components/header/header';
 import { CarBackground } from '../../../components/car-background/car-background';
+
+type StepInfo = {
+	button: {
+		text: string;
+		icon: string;
+	};
+};
 
 @Component({
 	selector: 'app-sign-up',
@@ -16,14 +18,16 @@ import { CarBackground } from '../../../components/car-background/car-background
 	styleUrl: './sign-up.scss',
 })
 export class SignUp {
-	buttonInfo: { name: string; icon: string }[] = [
-		{ name: 'Próximo Passo', icon: 'arrow-right' },
-		{ name: 'Concluir Cadastro', icon: 'check' },
+	stepInfo: StepInfo[] = [
+		{ button: { text: 'Próximo Passo', icon: 'arrow-right' } },
+		{ button: { text: 'Concluir Cadastro', icon: 'check' } },
 	];
 	currentStepIndex = 0;
 	endStepIndex = 1;
 
 	onSubmit(f: NgForm) {
+		if (!f.valid) return;
+
 		if (this.currentStepIndex < this.endStepIndex) {
 			this.currentStepIndex++;
 		}
