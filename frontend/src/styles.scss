@@ -20,8 +20,48 @@ body, html {
     height: 100%;
 }
 
+form {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+}
+
 fieldset {
     border: none;
     margin: 0;
     padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+
+    &>span {
+        width: 100%;
+    }
+}
+
+label {
+    display: flex;
+    flex-direction: column;
+
+    &:has(> input:required, > select:required)>span::before {
+        content: '*';
+        margin: 0 4px;
+    }
+}
+
+input,
+select {
+    padding: 12px 24px;
+    border-radius: 20px;
+    border: none;
+    outline: none;
+    background-color: #d9d9d9;
+}
+
+select {
+    appearance: none;
+    background-image: url('/chevron-down.svg');
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    background-size: 16px 16px;
 }
