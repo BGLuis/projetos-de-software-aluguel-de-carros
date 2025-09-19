@@ -1,0 +1,25 @@
+<div class="top">
+	<span class="background-name">{{car.backgroundName}}</span>
+	<span class="name">{{car.name}}</span>
+	<img [src]="car.imageURL" alt="{{car.name}} image" />
+</div>
+<div class="bottom">
+	<span class="price">
+		{{car.pricePerDay | currency:'BRL':'symbol':'1.2-2':'pt-BR'}}
+		<span class="day">/ dia</span>
+	</span>
+	<div class="features">
+		<span>
+			<lucide-icon name="fuel" size="24" />
+			{{car.gasType}}
+		</span>
+		<span>
+			<lucide-icon name="users" size="24" />
+			{{car.seats}}
+		</span>
+		<span>
+			<lucide-icon name="settings" size="24" />
+			{{car.gearType}}
+		</span>
+	</div>
+</div>

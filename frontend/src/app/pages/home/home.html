@@ -1,3 +1,9 @@
 <app-header />
 <app-car-background [isAbsolute]="false" />
 <app-search-bar />
+<h1>Escolha o carro que mais combina com você!</h1>
+<div class="cards">
+	@for (car of cars(); track $index) {
+	<app-car-card [car]="car" />
+	}
+</div>

@@ -44,26 +44,3 @@ legend {
     margin-bottom: 12px;
     font-weight: bold;
 }
-
-button {
-    padding: 12px 24px;
-    border-radius: 20px;
-    border: none;
-    outline: none;
-    background-color: black;
-    color: white;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    margin: 0 auto;
-    
-
-    &:hover {
-        background-color: hsl(0, 0%, 05%);
-    }
-}

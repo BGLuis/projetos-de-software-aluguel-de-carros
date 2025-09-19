@@ -17,8 +17,11 @@ import {
 	Check,
 	Eye,
 	EyeOff,
+	Fuel,
 	LucideAngularModule,
 	Menu,
+	Settings,
+	Users,
 } from 'lucide-angular';
 
 export const appConfig: ApplicationConfig = {
@@ -35,6 +38,9 @@ export const appConfig: ApplicationConfig = {
 				Check,
 				Eye,
 				EyeOff,
+				Fuel,
+				Users,
+				Settings,
 			}),
 		),
 	],
