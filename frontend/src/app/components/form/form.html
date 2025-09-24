@@ -1,0 +1,19 @@
+<form class="card" #f="ngForm" (ngSubmit)="_onSubmit(f)" novalidate>
+	<div class="info">
+		@if (currentStepIndex > 0) {
+		<div class="left" (click)="previousStep()">
+			<lucide-icon name="arrow-left" size="48"></lucide-icon>
+		</div>
+		}
+		<div class="right">
+			<ng-content select="[top]"></ng-content>
+		</div>
+	</div>
+	<div [style.grid-template-columns]="calculateColumns()" class="steps">
+		<ng-content select="[steps]"></ng-content>
+	</div>
+	<button>
+		{{stepInfo()[currentStepIndex].button.text}}
+		<lucide-icon name="{{stepInfo()[currentStepIndex].button.icon}}" />
+	</button>
+</form>
