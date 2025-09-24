@@ -1,107 +1,183 @@
 <app-header></app-header>
-<app-form [onSubmit]="onSubmit" [stepInfo]="stepInfo" [title]="'Cadastro'">
+<app-form [onSubmit]="onSubmit" [stepInfo]="stepInfo">
 	<div top>
 		<h2>Cadastro</h2>
 		<span>Já tem uma conta? <a href="">Log In</a></span>
 		<span>* As informações são obrigatórias</span>
 	</div>
 	<app-steps steps>
-		<app-step>
-			<fieldset>
+		<app-step [formGroup]="stepInfo()[0].formGroup">
+			<fieldset formGroupName="personal">
 				<legend>Identificação Pessoal</legend>
 				<label style="width: calc((100% - 16px) / 2)">
 					<span>Nome Completo:</span>
-					<input type="text" name="name" ngModel required />
+					<input
+						type="text"
+						name="name"
+						formControlName="fullName"
+						required
+					/>
 				</label>
 				<label style="width: calc((100% - 16px) / 2)">
 					<span>Telefone:</span>
-					<input type="text" name="telphone" ngModel required />
+					<input
+						type="text"
+						name="telephone"
+						formControlName="telephone"
+						required
+					/>
 				</label>
 				<label style="width: calc((100% - 32px) / 3)">
 					<span>Email:</span>
-					<input type="text" name="email" ngModel required />
+					<input
+						type="text"
+						name="email"
+						formControlName="email"
+						required
+					/>
 				</label>
 				<label style="width: calc((100% - 32px) / 3)">
 					<span>RG:</span>
-					<input type="text" name="rg" ngModel required />
+					<input
+						type="text"
+						name="rg"
+						formControlName="rg"
+						required
+					/>
 				</label>
 				<label style="width: calc((100% - 32px) / 3)">
 					<span>CPF:</span>
-					<input type="text" name="cpf" ngModel required />
+					<input
+						type="text"
+						name="cpf"
+						formControlName="cpf"
+						required
+					/>
 				</label>
 			</fieldset>
-			<fieldset>
+			<fieldset formGroupName="location">
 				<legend>Localização</legend>
 				<label style="width: calc((100% - 32px) / 3)">
 					<span>CEP:</span>
-					<input type="text" name="cep" ngModel required />
+					<input
+						type="text"
+						name="cep"
+						formControlName="cep"
+						required
+					/>
 				</label>
 				<label style="width: calc((100% - 32px) / 3)">
 					<span>Estado:</span>
-					<select name="state" ngModel required>
-						<option value="state1">State 1</option>
-						<option value="state2">State 2</option>
-						<option value="state3">State 3</option>
+					<select name="state" formControlName="state" required>
+						@for (state of states; track state) {
+						<option [value]="state">{{ state }}</option>
+						}
 					</select>
 				</label>
 				<label style="width: calc((100% - 32px) / 3)">
 					<span>Cidade:</span>
-					<select name="city" ngModel required>
-						<option value="city1">City 1</option>
-						<option value="city2">City 2</option>
-						<option value="city3">City 3</option>
+					<select name="city" formControlName="city" required>
+						@for (city of cities(); track city.name) { @if($index
+						=== 0) {
+						<option [value]="city" selected>{{ city.name }}</option>
+						}@else {
+						<option [value]="city">{{ city.name }}</option>
+						} } @empty {
+						<option [value]="null" selected>
+							Por favor, selecione um Estado
+						</option>
+						}
 					</select>
 				</label>
 				<label style="width: calc((100% - 32px) / 3)">
 					<span>Bairro:</span>
-					<input type="text" name="neighborhood" ngModel required />
+					<input
+						type="text"
+						name="neighborhood"
+						formControlName="neighborhood"
+						required
+					/>
 				</label>
 				<label style="width: calc((100% - 32px) / 3)">
 					<span>Rua:</span>
-					<input type="text" name="street" ngModel required />
+					<input
+						type="text"
+						name="street"
+						formControlName="street"
+						required
+					/>
 				</label>
 				<label style="width: calc((100% - 88px) / 6)">
 					<span>Número:</span>
-					<input type="text" name="number" ngModel required />
+					<input
+						type="text"
+						name="number"
+						formControlName="number"
+						required
+					/>
 				</label>
 				<label style="width: calc((100% - 88px) / 6)">
 					<span>Complemento:</span>
-					<input type="text" name="complement" ngModel />
+					<input
+						type="text"
+						name="complement"
+						formControlName="complement"
+					/>
 				</label>
 			</fieldset>
 		</app-step>
-		<app-step>
-			<fieldset>
+		<app-step [formGroup]="stepInfo()[1].formGroup">
+			<fieldset formGroupName="profissional">
 				<legend>Dados Profissionais</legend>
 				<label style="width: calc((100% - 16px) / 2)">
 					<span>Profissão:</span>
-					<input type="text" name="profession" ngModel required />
+					<input
+						type="text"
+						name="profession"
+						formControlName="profession"
+						required
+					/>
 				</label>
 				<span style="width: calc((100% - 16px) / 2)"></span>
 				<label style="width: calc((100% - 16px) / 2)">
 					<span>Entidade(s) Empregadora(s):</span>
-					<input type="text" name="company" ngModel required />
+					<input
+						type="text"
+						name="company"
+						formControlName="company"
+						required
+					/>
 				</label>
 				<label style="width: calc((100% - 16px) / 2)">
 					<span>Rendimento(s) Autodeferido(s):</span>
-					<input type="text" name="monthlyIncome" ngModel required />
+					<input
+						type="text"
+						name="monthlyIncome"
+						formControlName="monthlyIncome"
+						required
+					/>
 				</label>
 			</fieldset>
-			<fieldset>
+			<fieldset formGroupName="password">
 				<legend>Escolha Sua Senha</legend>
 				<span
 					>Usaremos o e-mail fornecido na Identificação Pessoal</span
 				>
 				<label style="width: calc((100% - 16px) / 2)">
 					<span>Senha:</span>
-					<input type="password" name="password" ngModel required />
+					<input
+						type="password"
+						name="password"
+						formControlName="password"
+						required
+					/>
 				</label>
 				<label style="width: calc((100% - 16px) / 2)">
 					<span>Confirme Sua Senha:</span>
 					<input
 						type="password"
 						name="confirmPassword"
-						ngModel
+						formControlName="confirmPassword"
 						required
 					/>
 				</label>

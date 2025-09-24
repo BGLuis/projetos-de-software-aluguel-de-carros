@@ -53,7 +53,7 @@ label {
         margin-bottom: 12px;
     }
 
-    &:has(> input:required, > select:required)>span::before {
+    &:has(> input:required, > select:required) > span:first-of-type:before {
         content: '*';
         margin: 0 4px;
     }

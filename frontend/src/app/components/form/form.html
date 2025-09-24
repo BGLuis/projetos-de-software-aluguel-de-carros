@@ -1,4 +1,9 @@
-<form class="card" #f="ngForm" (ngSubmit)="_onSubmit(f)" novalidate>
+<form
+	class="card"
+	[formGroup]="currentFormGroup"
+	(ngSubmit)="_onSubmit()"
+	novalidate
+>
 	<div class="info">
 		@if (currentStepIndex > 0) {
 		<div class="left" (click)="previousStep()">
