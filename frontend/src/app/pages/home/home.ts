@@ -1,8 +1,8 @@
 import { Component, signal } from '@angular/core';
-import { CarBackground } from '../../components/car-background/car-background';
-import { HeaderComponent } from '../../components/header/header';
-import { SearchBar } from '../../components/search-bar/search-bar';
-import { Car, CarCard } from '../../components/car-card/car-card';
+import { CarBackground } from '#components/car-background/car-background';
+import { HeaderComponent } from '#components/header/header';
+import { SearchBar } from '#components/search-bar/search-bar';
+import { Car, CarCard } from '#components/car-card/car-card';
 
 const cars: Car[] = [
 	{
