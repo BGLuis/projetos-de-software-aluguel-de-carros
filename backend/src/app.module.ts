@@ -9,15 +9,15 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 import { CustomersModule } from './customers/customers.module';
 
 @Module({
-  imports: [
-    AppConfigModule,
-    DatabaseModule,
-    EventEmitterModule.forRoot(),
-    AuthModule,
-    UsersModule,
-    CustomersModule,
-  ],
-  controllers: [AppController],
-  providers: [AppService],
+	imports: [
+		AppConfigModule,
+		DatabaseModule,
+		EventEmitterModule.forRoot(),
+		AuthModule,
+		UsersModule,
+		CustomersModule,
+	],
+	controllers: [AppController],
+	providers: [AppService],
 })
 export class AppModule {}

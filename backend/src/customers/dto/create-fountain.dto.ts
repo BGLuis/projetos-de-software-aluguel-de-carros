@@ -1,9 +1,9 @@
 import { IsString, IsNumber } from 'class-validator';
 
 export class CreateFountainDto {
-    @IsString()
-    employerEntity: string;
+	@IsString()
+	employerEntity: string;
 
-    @IsNumber()
-    output: number;
+	@IsNumber()
+	output: number;
 }

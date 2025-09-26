@@ -33,12 +33,14 @@ export class AppConfigService {
 		const email = this.config.get<string>('USERADMIN_EMAIL');
 		const password = this.config.get<string>('USERADMIN_PASSWORD');
 		if (!email || !password) {
-			throw new Error('Admin credentials are not set. Please set USERADMIN_EMAIL and USERADMIN_PASSWORD environment variables.');
+			throw new Error(
+				'Admin credentials are not set. Please set USERADMIN_EMAIL and USERADMIN_PASSWORD environment variables.',
+			);
 		}
 		return {
 			email,
 			password,
-		}
+		};
 	}
 
 	get database() {
