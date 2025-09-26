@@ -1,7 +1,7 @@
 import {
-  Injectable,
-  NotFoundException,
-  BadRequestException,
+	Injectable,
+	NotFoundException,
+	BadRequestException,
 } from '@nestjs/common';
 import { CreateCustomerDto } from './dto/create-customer.dto';
 import { UpdateCustomerDto } from './dto/update-customer.dto';
@@ -11,263 +11,300 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Customer } from './entities/customer.entity';
 import { Fountain } from './entities/fountains.entity';
-import { EventEmitter2 } from "@nestjs/event-emitter";
+import { Individual } from 'src/users/entities/individual.entity';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Injectable()
 export class CustomersService {
-  constructor(
-    @InjectRepository(Customer)
-    private readonly customerRepository: Repository<Customer>,
-    @InjectRepository(Fountain)
-    private readonly fountainRepository: Repository<Fountain>,
-    private readonly passwordEncryption: PasswordEncryption,
-    private readonly jwtService: JwtService,
-    private eventEmitter: EventEmitter2,
-  ) {}
+	constructor(
+		@InjectRepository(Customer)
+		private readonly customerRepository: Repository<Customer>,
+		@InjectRepository(Fountain)
+		private readonly fountainRepository: Repository<Fountain>,
+		@InjectRepository(Individual)
+		private readonly individualRepository: Repository<Individual>,
+		private readonly passwordEncryption: PasswordEncryption,
+		private readonly jwtService: JwtService,
+		private eventEmitter: EventEmitter2,
+	) {}
 
-  async create(dto: CreateCustomerDto): Promise<Customer> {
-    try {
-      // Verificar se já existe um customer com esse CPF
-      const existingCustomer = await this.customerRepository.findOne({
-        where: { cpf: dto.cpf },
-      });
+	async create(dto: CreateCustomerDto): Promise<Customer> {
+		try {
+			// Verificar se já existe um individual com esse CPF
+			const existingIndividual = await this.individualRepository.findOne({
+				where: { cpf: dto.cpf },
+			});
 
-      if (existingCustomer) {
-        throw new BadRequestException('Cliente já existe com este CPF');
-      }
+			if (existingIndividual) {
+				throw new BadRequestException('Cliente já existe com este CPF');
+			}
 
-      // Verificar se já existe um usuário com esse email
-      const existingUser = await this.customerRepository.findOne({
-        where: { email: dto.email },
-      });
+			// Verificar se já existe um usuário com esse email
+			const existingUser = await this.individualRepository.findOne({
+				where: { email: dto.email },
+			});
 
-      if (existingUser) {
-        throw new BadRequestException('Email já está em uso');
-      }
+			if (existingUser) {
+				throw new BadRequestException('Email já está em uso');
+			}
 
-      // Criptografar a senha
-      const hashedPassword = await this.passwordEncryption.encrypt(
-        dto.password,
-      );
+			// Criptografar a senha
+			const hashedPassword = await this.passwordEncryption.encrypt(
+				dto.password,
+			);
 
-      // Criar o customer
-      const customer = this.customerRepository.create({
-        name: dto.name,
-        email: dto.email,
-        password: hashedPassword,
-        address: dto.address,
-        rg: dto.rg,
-        cpf: dto.cpf,
-        profession: dto.profession,
-        roles: [], // Inicializar com array vazio
-      });
+			// Criar o individual
+			const individual = this.individualRepository.create({
+				name: dto.name,
+				email: dto.email,
+				password: hashedPassword,
+				address: dto.address,
+				cpf: dto.cpf,
+				profession: dto.profession,
+				birthdate: new Date(), // Você pode adicionar este campo ao DTO se necessário
+				roles: [], // Inicializar com array vazio
+			});
 
-      // Salvar o customer primeiro
-      const savedCustomer = await this.customerRepository.save(customer);
+			// Salvar o individual primeiro
+			const savedIndividual =
+				await this.individualRepository.save(individual);
 
-      // Criar e salvar as fountains
-      if (dto.fountains && dto.fountains.length > 0) {
-        const fountains = dto.fountains.map((fountainDto) =>
-          this.fountainRepository.create({
-            employerEntity: fountainDto.employerEntity,
-            output: fountainDto.output,
-            customer: savedCustomer,
-          }),
-        );
+			// Criar o customer associado ao individual
+			const customer = this.customerRepository.create({
+				individual: savedIndividual,
+			});
 
-        await this.fountainRepository.save(fountains);
-      }
+			// Salvar o customer
+			const savedCustomer = await this.customerRepository.save(customer);
 
-      // Retornar o customer com as fountains
-      const result = await this.customerRepository.findOne({
-        where: { id: savedCustomer.id },
-        relations: ['fountains'],
-      });
+			// Criar e salvar as fountains
+			if (dto.fountains && dto.fountains.length > 0) {
+				const fountains = dto.fountains.map((fountainDto) =>
+					this.fountainRepository.create({
+						employerEntity: fountainDto.employerEntity,
+						output: fountainDto.output,
+						customer: savedCustomer,
+					}),
+				);
 
-      if (!result) {
-        throw new BadRequestException('Erro ao buscar cliente criado');
-      }
+				await this.fountainRepository.save(fountains);
+			}
 
-      return result;
-    } catch (error) {
-      if (error instanceof BadRequestException) {
-        throw error;
-      }
-      throw new BadRequestException('Erro ao criar cliente');
-    }
-  }
+			// Retornar o customer com as relações
+			const result = await this.customerRepository.findOne({
+				where: { id: savedCustomer.id },
+				relations: ['individual', 'fountains'],
+			});
 
-  async findAll(): Promise<Customer[]> {
-    return await this.customerRepository.find({
-      relations: ['fountains'],
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        address: true,
-        rg: true,
-        cpf: true,
-        profession: true,
-        roles: true,
-        createdAt: true,
-        updatedAt: true,
-        fountains: true,
-      },
-    });
-  }
+			if (!result) {
+				throw new BadRequestException('Erro ao buscar cliente criado');
+			}
 
-  async findOne(id: string): Promise<Customer> {
-    const customer = await this.customerRepository.findOne({
-      where: { id },
-      relations: ['fountains'],
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        address: true,
-        rg: true,
-        cpf: true,
-        profession: true,
-        roles: true,
-        createdAt: true,
-        updatedAt: true,
-        fountains: true,
-      },
-    });
+			return result;
+		} catch (error) {
+			if (error instanceof BadRequestException) {
+				throw error;
+			}
+			throw new BadRequestException('Erro ao criar cliente');
+		}
+	}
 
-    if (!customer) {
-      throw new NotFoundException(`Cliente com ID ${id} não encontrado`);
-    }
+	async findAll(): Promise<Customer[]> {
+		return await this.customerRepository.find({
+			relations: ['individual', 'legalEntity', 'fountains'],
+			select: {
+				id: true,
+				createdAt: true,
+				updatedAt: true,
+				individual: {
+					id: true,
+					name: true,
+					email: true,
+					address: true,
+					cpf: true,
+					profession: true,
+					birthdate: true,
+					roles: true,
+					createdAt: true,
+					updatedAt: true,
+				},
+				legalEntity: {
+					id: true,
+					cnpj: true,
+					companyName: true,
+					createdAt: true,
+					updatedAt: true,
+				},
+				fountains: true,
+			},
+		});
+	}
 
-    return customer;
-  }
+	async findOne(id: string): Promise<Customer> {
+		const customer = await this.customerRepository.findOne({
+			where: { id },
+			relations: ['individual', 'legalEntity', 'fountains'],
+			select: {
+				id: true,
+				createdAt: true,
+				updatedAt: true,
+				individual: {
+					id: true,
+					name: true,
+					email: true,
+					address: true,
+					cpf: true,
+					profession: true,
+					birthdate: true,
+					roles: true,
+					createdAt: true,
+					updatedAt: true,
+				},
+				legalEntity: {
+					id: true,
+					cnpj: true,
+					companyName: true,
+					createdAt: true,
+					updatedAt: true,
+				},
+				fountains: true,
+			},
+		});
 
-  async update(
-    id: string,
-    updateCustomerDto: UpdateCustomerDto,
-  ): Promise<Customer> {
-    // Verificar se o customer existe
-    const existingCustomer = await this.customerRepository.findOne({
-      where: { id },
-      relations: ['fountains'],
-    });
+		if (!customer) {
+			throw new NotFoundException(`Cliente com ID ${id} não encontrado`);
+		}
 
-    if (!existingCustomer) {
-      throw new NotFoundException(`Cliente com ID ${id} não encontrado`);
-    }
+		return customer;
+	}
 
-    // Se está atualizando o CPF, verificar se não existe outro cliente com o mesmo CPF
-    if (
-      updateCustomerDto.cpf &&
-      updateCustomerDto.cpf !== existingCustomer.cpf
-    ) {
-      const customerWithCpf = await this.customerRepository.findOne({
-        where: { cpf: updateCustomerDto.cpf },
-      });
+	async update(
+		id: string,
+		updateCustomerDto: UpdateCustomerDto,
+	): Promise<Customer> {
+		// Verificar se o customer existe
+		const existingCustomer = await this.customerRepository.findOne({
+			where: { id },
+			relations: ['individual', 'fountains'],
+		});
 
-      if (customerWithCpf) {
-        throw new BadRequestException('Já existe um cliente com este CPF');
-      }
-    }
+		if (!existingCustomer) {
+			throw new NotFoundException(`Cliente com ID ${id} não encontrado`);
+		}
 
-    // Se está atualizando o email, verificar se não existe outro usuário com o mesmo email
-    if (
-      updateCustomerDto.email &&
-      updateCustomerDto.email !== existingCustomer.email
-    ) {
-      const userWithEmail = await this.customerRepository.findOne({
-        where: { email: updateCustomerDto.email },
-      });
+		if (!existingCustomer.individual) {
+			throw new BadRequestException(
+				'Cliente não possui dados de pessoa física',
+			);
+		}
 
-      if (userWithEmail) {
-        throw new BadRequestException('Email já está em uso');
-      }
-    }
+		// Se está atualizando o CPF, verificar se não existe outro individual com o mesmo CPF
+		if (
+			updateCustomerDto.cpf &&
+			updateCustomerDto.cpf !== existingCustomer.individual.cpf
+		) {
+			const individualWithCpf = await this.individualRepository.findOne({
+				where: { cpf: updateCustomerDto.cpf },
+			});
 
-    // Criptografar nova senha se fornecida
-    let hashedPassword: string | undefined;
-    if (updateCustomerDto.password) {
-      hashedPassword = await this.passwordEncryption.encrypt(
-        updateCustomerDto.password,
-      );
-    }
+			if (individualWithCpf) {
+				throw new BadRequestException(
+					'Já existe um cliente com este CPF',
+				);
+			}
+		}
 
-    // Preparar dados para atualização (sem fountains)
-    const { fountains, ...updateFields } = updateCustomerDto;
-    const updateData = {
-      ...updateFields,
-      password: hashedPassword || existingCustomer.password,
-    };
+		// Se está atualizando o email, verificar se não existe outro usuário com o mesmo email
+		if (
+			updateCustomerDto.email &&
+			updateCustomerDto.email !== existingCustomer.individual.email
+		) {
+			const userWithEmail = await this.individualRepository.findOne({
+				where: { email: updateCustomerDto.email },
+			});
 
-    // Atualizar o customer
-    await this.customerRepository.update(id, updateData);
+			if (userWithEmail) {
+				throw new BadRequestException('Email já está em uso');
+			}
+		}
 
-    // Se há fountains para atualizar, primeiro remover as existentes e criar as novas
-    if (fountains !== undefined) {
-      // Remover fountains existentes
-      await this.fountainRepository.delete({ customer: { id } });
+		// Criptografar nova senha se fornecida
+		let hashedPassword: string | undefined;
+		if (updateCustomerDto.password) {
+			hashedPassword = await this.passwordEncryption.encrypt(
+				updateCustomerDto.password,
+			);
+		}
 
-      // Criar novas fountains
-      if (fountains.length > 0) {
-        const newFountains = fountains.map((fountainDto) =>
-          this.fountainRepository.create({
-            employerEntity: fountainDto.employerEntity,
-            output: fountainDto.output,
-            customer: existingCustomer,
-          }),
-        );
+		// Preparar dados para atualização do individual
+		const { fountains, ...updateFields } = updateCustomerDto;
+		const updateData = {
+			...updateFields,
+			...(hashedPassword && { password: hashedPassword }),
+		};
 
-        await this.fountainRepository.save(newFountains);
-      }
-    }
+		// Atualizar o individual
+		await this.individualRepository.update(
+			existingCustomer.individual.id,
+			updateData,
+		);
 
-    // Retornar o customer atualizado
-    const updatedCustomer = await this.customerRepository.findOne({
-      where: { id },
-      relations: ['fountains'],
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        address: true,
-        rg: true,
-        cpf: true,
-        profession: true,
-        roles: true,
-        createdAt: true,
-        updatedAt: true,
-        fountains: true,
-      },
-    });
+		// Se há fountains para atualizar, primeiro remover as existentes e criar as novas
+		if (fountains !== undefined) {
+			// Remover fountains existentes
+			await this.fountainRepository.delete({ customer: { id } });
 
-    if (!updatedCustomer) {
-      throw new NotFoundException('Erro ao buscar cliente atualizado');
-    }
+			// Criar novas fountains
+			if (fountains.length > 0) {
+				const newFountains = fountains.map((fountainDto) =>
+					this.fountainRepository.create({
+						employerEntity: fountainDto.employerEntity,
+						output: fountainDto.output,
+						customer: existingCustomer,
+					}),
+				);
 
-    return updatedCustomer;
-  }
+				await this.fountainRepository.save(newFountains);
+			}
+		}
 
-  async remove(id: string): Promise<{ message: string; }> {
-    // Verificar se o customer existe
-    const existingCustomer = await this.customerRepository.findOne({
-      where: { id },
-      relations: ['fountains'],
-    });
+		// Retornar o customer atualizado
+		return this.findOne(id);
+	}
 
-    if (!existingCustomer) {
-      throw new NotFoundException(`Cliente com ID ${id} não encontrado`);
-    }
+	async remove(id: string): Promise<{ message: string; }> {
+		// Verificar se o customer existe
+		const existingCustomer = await this.customerRepository.findOne({
+			where: { id },
+			relations: ['individual', 'fountains'],
+		});
 
-    // Remover primeiro as fountains (devido à relação FK)
-    if (existingCustomer.fountains && existingCustomer.fountains.length > 0) {
-      await this.fountainRepository.delete({ customer: { id } });
-    }
+		if (!existingCustomer) {
+			throw new NotFoundException(`Cliente com ID ${id} não encontrado`);
+		}
 
-    // Remover o customer
-    await this.customerRepository.delete(id);
+		// Remover primeiro as fountains (devido à relação FK)
+		if (
+			existingCustomer.fountains &&
+			existingCustomer.fountains.length > 0
+		) {
+			await this.fountainRepository.delete({ customer: { id } });
+		}
 
-    return {
-      message: `Cliente ${existingCustomer.name} removido com sucesso`,
-    };
-  }
+		// Remover o customer
+		await this.customerRepository.delete(id);
+
+		// Remover o individual se existir
+		if (existingCustomer.individual) {
+			await this.individualRepository.delete(
+				existingCustomer.individual.id,
+			);
+		}
+
+		const clientName = existingCustomer.individual?.name || 'Cliente';
+
+		return {
+			message: `Cliente ${clientName} removido com sucesso`,
+		};
+	}
 }

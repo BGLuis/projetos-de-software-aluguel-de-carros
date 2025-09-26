@@ -1,0 +1,6 @@
+export enum OrderStatus {
+	SWITCH = 'SWITCH',
+	ON_ANALYSIS = 'ON_ANALYSIS',
+	FINISHED = 'FINISHED',
+	APPROVED = 'APPROVED',
+}
