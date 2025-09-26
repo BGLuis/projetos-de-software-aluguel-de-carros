@@ -36,8 +36,11 @@ export class Enterprise implements Owner {
 		// Implementation for cancel request
 	}
 
-	getPersonalData(): any {
-		// Implementation for getting personal data
-		return this.legalEntity;
+	get PersonalData(): any {
+		return {
+			id: this.id,
+			identification: this.identification,
+			legalEntity: this.legalEntity,
+		};
 	}
 }

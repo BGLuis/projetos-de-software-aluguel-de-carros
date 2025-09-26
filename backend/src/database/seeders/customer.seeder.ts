@@ -6,6 +6,7 @@ import { Individual } from 'src/users/entities/individual.entity';
 import { Customer } from 'src/customers/entities/customer.entity';
 import { Fountain } from 'src/customers/entities/fountains.entity';
 import { PasswordEncryption } from 'src/encryption/password-encryption.provider';
+import { Role } from 'src/auth/roles/role.entity';
 
 @Injectable()
 export class CustomerSeeder {
@@ -45,7 +46,7 @@ export class CustomerSeeder {
 					max: 70,
 					mode: 'age',
 				}),
-				roles: [],
+				roles: [Role.CLIENT],
 			});
 
 			const savedIndividual =

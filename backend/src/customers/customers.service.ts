@@ -30,6 +30,14 @@ export class CustomersService {
 
 	async create(dto: CreateCustomerDto): Promise<Customer> {
 		try {
+			const existingCustomer = await this.customerRepository.findOne({
+				where: { email: dto.email },
+			});
+
+			if (existingCustomer) {
+				throw new BadRequestException('Email já está em uso');
+			}
+
 			const existingIndividual = await this.individualRepository.findOne({
 				where: { cpf: dto.cpf },
 			});
@@ -38,21 +46,12 @@ export class CustomersService {
 				throw new BadRequestException('Cliente já existe com este CPF');
 			}
 
-			const existingUser = await this.individualRepository.findOne({
-				where: { email: dto.email },
-			});
-
-			if (existingUser) {
-				throw new BadRequestException('Email já está em uso');
-			}
-
 			const hashedPassword = await this.passwordEncryption.encrypt(
 				dto.password,
 			);
 
+			// Criar o Individual separadamente
 			const individual = this.individualRepository.create({
-				name: dto.name,
-				email: dto.email,
 				password: hashedPassword,
 				address: dto.address,
 				cpf: dto.cpf,
@@ -62,7 +61,10 @@ export class CustomersService {
 			const savedIndividual =
 				await this.individualRepository.save(individual);
 
+			// Criar o Customer com herança de User
 			const customer = this.customerRepository.create({
+				email: dto.email,
+				password: hashedPassword,
 				individual: savedIndividual,
 			});
 
@@ -103,6 +105,8 @@ export class CustomersService {
 			relations: ['individual', 'legalEntity', 'fountains'],
 			select: {
 				id: true,
+				email: true,
+				roles: true,
 				createdAt: true,
 				updatedAt: true,
 				individual: {
@@ -135,6 +139,8 @@ export class CustomersService {
 			relations: ['individual', 'legalEntity', 'fountains'],
 			select: {
 				id: true,
+				email: true,
+				roles: true,
 				createdAt: true,
 				updatedAt: true,
 				individual: {

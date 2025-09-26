@@ -1,12 +1,11 @@
 import { ChildEntity, Column, OneToOne, JoinColumn } from 'typeorm';
 import { User } from './user.entity';
-import { Foundation } from 'src/customers/entities/foundation.entity';
+import { Fountain } from 'src/customers/entities/fountains.entity';
 
 @ChildEntity()
 export class Individual extends User {
 	@Column()
 	name: string;
-
 	@Column({ unique: true })
 	cpf: string;
 
@@ -19,7 +18,7 @@ export class Individual extends User {
 	@Column({ type: 'date' })
 	birthdate: Date;
 
-	@OneToOne(() => Foundation, { nullable: true })
+	@OneToOne(() => Fountain, { nullable: true })
 	@JoinColumn()
-	foundation?: Foundation;
+	fountain?: Fountain;
 }

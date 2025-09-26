@@ -1,5 +1,3 @@
 export interface Owner {
-	getDocumentsRequest(): void;
-	cancelRequest(): void;
-	getPersonalData(): any;
+	get PersonalData(): any;
 }

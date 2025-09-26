@@ -40,4 +40,12 @@ export class BankAgent implements Owner {
 		// Implementation for getting personal data
 		return null;
 	}
+
+	get PersonalData(): any {
+		return {
+			id: this.id,
+			creditAgreements: this.creditAgreements,
+			grantedCredit: this.grantedCredit,
+		};
+	}
 }
