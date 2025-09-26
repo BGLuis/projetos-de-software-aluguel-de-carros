@@ -7,6 +7,8 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { CustomersModule } from './customers/customers.module';
+import { VehiclesModule } from './vehicles/vehicles.module';
+import { RentalsModule } from './rentals/rentals.module';
 import { SeederModule } from './database/seeders/seeder.module';
 
 @Module({
@@ -17,6 +19,8 @@ import { SeederModule } from './database/seeders/seeder.module';
 		AuthModule,
 		UsersModule,
 		CustomersModule,
+		VehiclesModule,
+		RentalsModule,
 		SeederModule,
 	],
 	controllers: [AppController],

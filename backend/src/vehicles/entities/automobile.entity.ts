@@ -26,6 +26,21 @@ export class Automobile {
 	@Column({ unique: true })
 	renavam: string;
 
+	@Column()
+	year: number;
+
+	@Column()
+	color: string;
+
+	@Column('decimal', { precision: 10, scale: 2 })
+	dailyRate: number;
+
+	@Column()
+	category: string;
+
+	@Column({ default: true })
+	available: boolean;
+
 	@CreateDateColumn()
 	createdAt: Date;
 

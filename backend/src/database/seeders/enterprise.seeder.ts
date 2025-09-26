@@ -22,7 +22,9 @@ export class EnterpriseSeeder {
 		const legalEntities = await this.legalEntityRepository.find();
 
 		if (legalEntities.length === 0) {
-			this.logger.warn('No legal entities found. Please run legal-entity seeder first.');
+			this.logger.warn(
+				'No legal entities found. Please run legal-entity seeder first.',
+			);
 			return enterprises;
 		}
 

@@ -21,7 +21,9 @@ export class BankAgentSeeder {
 		const creditAgreements = await this.creditAgreementRepository.find();
 
 		if (creditAgreements.length === 0) {
-			this.logger.warn('No credit agreements found. Please run credit-agreement seeder first.');
+			this.logger.warn(
+				'No credit agreements found. Please run credit-agreement seeder first.',
+			);
 			return bankAgents;
 		}
 
@@ -39,7 +41,9 @@ export class BankAgentSeeder {
 			bankAgents.push(savedBankAgent);
 		}
 
-		this.logger.log(`Created ${actualCount} bank agents (limited by available credit agreements: ${creditAgreements.length})`);
+		this.logger.log(
+			`Created ${actualCount} bank agents (limited by available credit agreements: ${creditAgreements.length})`,
+		);
 		return bankAgents;
 	}
 }

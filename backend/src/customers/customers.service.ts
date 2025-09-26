@@ -30,7 +30,6 @@ export class CustomersService {
 
 	async create(dto: CreateCustomerDto): Promise<Customer> {
 		try {
-			// Verificar se já existe um individual com esse CPF
 			const existingIndividual = await this.individualRepository.findOne({
 				where: { cpf: dto.cpf },
 			});
@@ -39,7 +38,6 @@ export class CustomersService {
 				throw new BadRequestException('Cliente já existe com este CPF');
 			}
 
-			// Verificar se já existe um usuário com esse email
 			const existingUser = await this.individualRepository.findOne({
 				where: { email: dto.email },
 			});
@@ -48,12 +46,10 @@ export class CustomersService {
 				throw new BadRequestException('Email já está em uso');
 			}
 
-			// Criptografar a senha
 			const hashedPassword = await this.passwordEncryption.encrypt(
 				dto.password,
 			);
 
-			// Criar o individual
 			const individual = this.individualRepository.create({
 				name: dto.name,
 				email: dto.email,
@@ -61,23 +57,17 @@ export class CustomersService {
 				address: dto.address,
 				cpf: dto.cpf,
 				profession: dto.profession,
-				birthdate: new Date(), // Você pode adicionar este campo ao DTO se necessário
-				roles: [], // Inicializar com array vazio
 			});
 
-			// Salvar o individual primeiro
 			const savedIndividual =
 				await this.individualRepository.save(individual);
 
-			// Criar o customer associado ao individual
 			const customer = this.customerRepository.create({
 				individual: savedIndividual,
 			});
 
-			// Salvar o customer
 			const savedCustomer = await this.customerRepository.save(customer);
 
-			// Criar e salvar as fountains
 			if (dto.fountains && dto.fountains.length > 0) {
 				const fountains = dto.fountains.map((fountainDto) =>
 					this.fountainRepository.create({
@@ -90,7 +80,6 @@ export class CustomersService {
 				await this.fountainRepository.save(fountains);
 			}
 
-			// Retornar o customer com as relações
 			const result = await this.customerRepository.findOne({
 				where: { id: savedCustomer.id },
 				relations: ['individual', 'fountains'],
@@ -182,7 +171,6 @@ export class CustomersService {
 		id: string,
 		updateCustomerDto: UpdateCustomerDto,
 	): Promise<Customer> {
-		// Verificar se o customer existe
 		const existingCustomer = await this.customerRepository.findOne({
 			where: { id },
 			relations: ['individual', 'fountains'],
@@ -198,7 +186,6 @@ export class CustomersService {
 			);
 		}
 
-		// Se está atualizando o CPF, verificar se não existe outro individual com o mesmo CPF
 		if (
 			updateCustomerDto.cpf &&
 			updateCustomerDto.cpf !== existingCustomer.individual.cpf
@@ -214,7 +201,6 @@ export class CustomersService {
 			}
 		}
 
-		// Se está atualizando o email, verificar se não existe outro usuário com o mesmo email
 		if (
 			updateCustomerDto.email &&
 			updateCustomerDto.email !== existingCustomer.individual.email
@@ -228,7 +214,6 @@ export class CustomersService {
 			}
 		}
 
-		// Criptografar nova senha se fornecida
 		let hashedPassword: string | undefined;
 		if (updateCustomerDto.password) {
 			hashedPassword = await this.passwordEncryption.encrypt(
@@ -236,25 +221,20 @@ export class CustomersService {
 			);
 		}
 
-		// Preparar dados para atualização do individual
 		const { fountains, ...updateFields } = updateCustomerDto;
 		const updateData = {
 			...updateFields,
 			...(hashedPassword && { password: hashedPassword }),
 		};
 
-		// Atualizar o individual
 		await this.individualRepository.update(
 			existingCustomer.individual.id,
 			updateData,
 		);
 
-		// Se há fountains para atualizar, primeiro remover as existentes e criar as novas
 		if (fountains !== undefined) {
-			// Remover fountains existentes
 			await this.fountainRepository.delete({ customer: { id } });
 
-			// Criar novas fountains
 			if (fountains.length > 0) {
 				const newFountains = fountains.map((fountainDto) =>
 					this.fountainRepository.create({
@@ -268,12 +248,10 @@ export class CustomersService {
 			}
 		}
 
-		// Retornar o customer atualizado
 		return this.findOne(id);
 	}
 
-	async remove(id: string): Promise<{ message: string; }> {
-		// Verificar se o customer existe
+	async remove(id: string): Promise<{ message: string }> {
 		const existingCustomer = await this.customerRepository.findOne({
 			where: { id },
 			relations: ['individual', 'fountains'],
@@ -283,7 +261,6 @@ export class CustomersService {
 			throw new NotFoundException(`Cliente com ID ${id} não encontrado`);
 		}
 
-		// Remover primeiro as fountains (devido à relação FK)
 		if (
 			existingCustomer.fountains &&
 			existingCustomer.fountains.length > 0
@@ -291,10 +268,8 @@ export class CustomersService {
 			await this.fountainRepository.delete({ customer: { id } });
 		}
 
-		// Remover o customer
 		await this.customerRepository.delete(id);
 
-		// Remover o individual se existir
 		if (existingCustomer.individual) {
 			await this.individualRepository.delete(
 				existingCustomer.individual.id,
