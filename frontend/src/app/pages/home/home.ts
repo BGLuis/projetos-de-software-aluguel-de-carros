@@ -1,8 +1,6 @@
 import { Component, signal } from '@angular/core';
-import { CarBackground } from '#components/car-background/car-background';
-import { HeaderComponent } from '#components/header/header';
-import { SearchBar } from '#components/search-bar/search-bar';
 import { Car, CarCard } from '#components/car-card/car-card';
+import { TopPage } from '#app/components/top-page/top-page';
 
 const cars: Car[] = [
 	{
@@ -45,7 +43,7 @@ const cars: Car[] = [
 
 @Component({
 	selector: 'app-home',
-	imports: [CarBackground, HeaderComponent, SearchBar, CarCard],
+	imports: [TopPage, CarCard],
 	templateUrl: './home.html',
 	styleUrl: './home.scss',
 })

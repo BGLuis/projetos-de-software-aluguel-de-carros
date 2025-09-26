@@ -1,22 +1,24 @@
 <form>
-	<label style="width: calc((100% - 64px) / 5)">
+	<label [style]="getWidthStyle()">
 		<span>Local de Retirada</span>
 		<input type="text" />
 	</label>
-	<label style="width: calc((100% - 64px) / 5)">
+	<label [style]="getWidthStyle()">
 		<span>Data da Retirada</span>
 		<input type="datetime-local" />
 	</label>
-	<label style="width: calc((100% - 64px) / 5)">
+	<label [style]="getWidthStyle()">
 		<span>Local de Devolução</span>
 		<input type="text" />
 	</label>
-	<label style="width: calc((100% - 64px) / 5)">
+	<label [style]="getWidthStyle()">
 		<span>Data da Devolução</span>
 		<input type="datetime-local" />
 	</label>
-	<button style="width: calc((100% - 64px) / 5)">
+	@if (hasNextButton) {
+	<button [style]="getWidthStyle()">
 		Ache seu veíuculo
 		<lucide-icon name="arrow-right" size="16" />
 	</button>
+	}
 </form>
