@@ -1,7 +1,7 @@
 <app-header />
 <app-car-background [isAbsolute]="false" />
 <app-search-bar />
-<h1>Escolha o carro que mais combina com você!</h1>
+<h1>Descubra o mundo com <img src="/logo-light.png" alt="Logo" /></h1>
 <div class="cards">
 	@for (car of cars(); track $index) {
 	<app-car-card [car]="car" />
