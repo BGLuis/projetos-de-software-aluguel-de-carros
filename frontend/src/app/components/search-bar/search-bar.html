@@ -1,23 +1,23 @@
-<form>
+<form [formGroup]="formGroup" (ngSubmit)="onSubmit()" novalidate>
 	<label [style]="getWidthStyle()">
 		<span>Local de Retirada</span>
-		<input type="text" />
+		<input type="text" formControlName="pickupLocation" />
 	</label>
 	<label [style]="getWidthStyle()">
 		<span>Data da Retirada</span>
-		<input type="datetime-local" />
+		<input type="datetime-local" formControlName="pickupDate" />
 	</label>
 	<label [style]="getWidthStyle()">
 		<span>Local de Devolução</span>
-		<input type="text" />
+		<input type="text" formControlName="returnLocation" />
 	</label>
 	<label [style]="getWidthStyle()">
 		<span>Data da Devolução</span>
-		<input type="datetime-local" />
+		<input type="datetime-local" formControlName="returnDate" />
 	</label>
 	@if (hasNextButton) {
 	<button [style]="getWidthStyle()">
-		Ache seu veíuculo
+		Ache seu veículo
 		<lucide-icon name="arrow-right" size="16" />
 	</button>
 	}
