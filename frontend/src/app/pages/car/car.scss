@@ -1,0 +1,93 @@
+app-car-background {
+	height: calc(100% - 360px);
+}
+
+.container {
+	display: flex;
+	padding: 0 2rem;
+	justify-content: space-between;
+	max-width: 1440px;
+	margin: 2rem auto;
+}
+
+.payment {
+	background: #f3f3f3;
+}
+
+.summary {
+	border-radius: 15px;
+	border: 1px solid #000;
+	background: linear-gradient(180deg, #d9d9d9 0%, #737373 100%);
+	width: 300px;
+	h1 {
+		padding: 1rem 1rem;
+	}
+	span {
+		display: block;
+	}
+	a {
+		color: #000;
+		font-size: 0.8rem;
+	}
+	.item {
+		border-bottom: 1px solid #000;
+		padding: 1rem 1rem;
+
+		.header {
+			display: flex;
+			justify-content: space-between;
+		}
+		.data {
+			color: #313131;
+			margin-bottom: 10px;
+		}
+		.local {
+			color: #313131;
+			font-size: 0.8rem;
+		}
+
+		&.cost {
+			.body {
+				display: flex;
+				justify-content: space-between;
+				margin: 10px 0;
+				color: #313131;
+
+				h2 {
+					font-size: 0.7rem;
+				}
+			}
+		}
+
+		&.total {
+			background-color: #000;
+			color: #fff;
+			text-align: end;
+			h2 {
+				font-size: 1rem;
+			}
+			.body {
+				font-size: 2.5rem;
+				font-weight: 700;
+			}
+		}
+
+		&.authorization {
+			h2 {
+				font-size: 1.5rem;
+				margin-bottom: 10px;
+			}
+			div {
+				display: flex;
+				justify-content: space-between;
+				margin-bottom: 10px;
+				color: #313131;
+			}
+
+			p {
+				font-weight: 500;
+				text-align: justify;
+			}
+		}
+	}
+}
