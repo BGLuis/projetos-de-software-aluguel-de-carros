@@ -1,0 +1,12 @@
+<label class="checkbox-container" [for]="id">
+	<input
+		type="checkbox"
+		[id]="id"
+		[checked]="checked"
+		[disabled]="disabled"
+		(change)="onCheckboxChange($event)"
+		class="checkbox-input"
+	/>
+	<span class="checkbox-custom"></span>
+	<span class="checkbox-label" *ngIf="label">{{ label }}</span>
+</label>
