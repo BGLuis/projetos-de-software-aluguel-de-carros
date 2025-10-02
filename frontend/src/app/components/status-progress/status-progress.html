@@ -1,0 +1,26 @@
+<div class="status-progress-container">
+    <div class="progress-bar">
+        @for (status of statuses; track $index) {
+        <div class="progress-step" [class.completed]="status.value" [class.active]="isActive($index)">
+            <div class="step-indicator">
+                <div class="circle">
+                    @if (status.value) {
+                    <div class="inner-circle"></div>
+                    }
+                </div>
+                @if ($index < statuses.length - 1) { <div class="connecting-line" [class.completed]="status.value">
+            </div>
+            }
+        </div>
+        <div class="step-label">
+            <span class="label-text">{{ status.label }}</span>
+            @if (status.value && status.editOption) {
+            <button class="edit-button" (click)="status.editOption.action()">
+                {{ status.editOption.label }}
+            </button>
+            }
+        </div>
+    </div>
+    }
+</div>
+</div>
