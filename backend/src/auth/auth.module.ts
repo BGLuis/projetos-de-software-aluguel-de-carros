@@ -5,6 +5,7 @@ import { EncryptionModule } from 'src/encryption/encryption.module';
 import { AppConfigModule } from 'src/app-config/app-config.module';
 import { UsersModule } from 'src/users/users.module';
 import { User } from 'src/users/entities/user.entity';
+import { Individual } from 'src/users/entities/individual.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import {
 	EventEmitter2,
@@ -21,7 +22,7 @@ import { JwtStrategy } from './strategy/jwt.strategy';
 		EncryptionModule,
 		AppConfigModule,
 		UsersModule,
-		TypeOrmModule.forFeature([User]),
+		TypeOrmModule.forFeature([User, Individual]),
 		JwtModule.registerAsync({
 			imports: [AppConfigModule],
 			inject: [AppConfigService],

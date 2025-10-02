@@ -13,6 +13,7 @@ import { Customer } from './entities/customer.entity';
 import { Fountain } from './entities/fountains.entity';
 import { Individual } from 'src/users/entities/individual.entity';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { Role } from 'src/auth/roles/role.entity';
 
 @Injectable()
 export class CustomersService {
@@ -66,6 +67,7 @@ export class CustomersService {
 				email: dto.email,
 				password: hashedPassword,
 				individual: savedIndividual,
+				roles: [Role.CLIENT],
 			});
 
 			const savedCustomer = await this.customerRepository.save(customer);

@@ -54,6 +54,9 @@ export class CustomerSeeder {
 			individuals.push(savedIndividual);
 
 			const customer = this.customerRepository.create({
+				email: savedIndividual.email,
+				password: hashedPassword,
+				roles: [Role.CLIENT],
 				individual: savedIndividual,
 			});
 
