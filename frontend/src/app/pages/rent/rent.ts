@@ -1,8 +1,14 @@
 import { Component } from '@angular/core';
 import { TopPage } from '#app/components/top-page/top-page';
-import { StatusProgress } from '#app/components/status-progress/status-progress';
+import {
+	Status,
+	StatusProgress,
+} from '#app/components/status-progress/status-progress';
 import { Icons } from '#app/components/icons/icons';
 import { Car, CarCard } from '#app/components/car-card/car-card';
+import { Resume } from '#app/components/resume/resume';
+import { Payment } from '#app/components/payment/payment';
+import { User } from '#app/auth/user';
 
 const choices = [
 	{
@@ -38,20 +44,20 @@ const choices = [
 
 @Component({
 	selector: 'app-rent',
-	imports: [TopPage, StatusProgress, CarCard, Icons],
+	imports: [TopPage, StatusProgress, CarCard, Icons, Resume, Payment],
 	templateUrl: './rent.html',
 	styleUrl: './rent.scss',
 })
 export class Rent {
 	choices = choices;
-	statuses = [
+	statuses: Status[] = [
 		{
 			label: 'Local e Data',
 			value: true,
 			editOption: {
 				label: 'Editar',
-				action: () => this.editLocalEData()
-			}
+				action: () => this.editLocalEData(),
+			},
 		},
 		{
 			label: 'Escolha do Carro',
@@ -64,7 +70,7 @@ export class Rent {
 		{
 			label: 'Dados Cadastrais',
 			value: false,
-		}
+		},
 	];
 
 	carsEX: Car = {
@@ -77,8 +83,37 @@ export class Rent {
 		seats: 4,
 	};
 
+	user: User = {
+		name: 'Marcela Mendes',
+		email: 'marcela.mendes@google.com',
+		phone: {
+			ddi: '55',
+			ddd: '31',
+			number: '91234-5678',
+		},
+	};
+
+	pickupDate: Date = new Date('2024-07-01T10:00:00');
+	returnDate: Date = new Date('2024-07-10T10:00:00');
+	hasInsurance: boolean = false;
+
+	selectedCar: Car | null = null;
+
 	editLocalEData() {
 		// Lógica para editar local e data
 		console.log('Editando Local e Data');
+	}
+
+	selectCar(car: Car) {
+		this.statuses[1].value = true;
+		this.selectedCar = car;
+	}
+
+	confirmReservation() {
+		this.statuses[2].value = true;
+	}
+
+	reserve() {
+		this.statuses[3].value = true;
 	}
 }

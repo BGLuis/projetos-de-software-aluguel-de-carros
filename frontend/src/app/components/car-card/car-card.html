@@ -1,7 +1,12 @@
 <div class="top">
 	<span class="background-name">{{car.backgroundName}}</span>
 	<span class="name">{{car.name}}</span>
-	<img [src]="car.imageURL" alt="{{car.name}} image" />
+	<img
+		[src]="car.imageURL"
+		[style.width]="expanded ? '100%' : 'auto'"
+		[style.height]="expanded ? 'auto' : '150px'"
+		alt="{{car.name}} image"
+	/>
 </div>
 <div class="bottom">
 	<span class="price">

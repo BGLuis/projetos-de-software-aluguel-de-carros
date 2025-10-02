@@ -1,0 +1,49 @@
+<h2>Resumo da Reserva</h2>
+
+<h3>Retirada</h3>
+<span>{{pickupDate | date:'fullDate':'pt-BR'}}</span>
+
+<div class="line"></div>
+
+<h3>Devolução</h3>
+<span>{{returnDate | date:'fullDate':'pt-BR'}}</span>
+
+<div class="line"></div>
+
+<h3>Carro Selecionado</h3>
+<span>{{selectedCar.name}}</span>
+
+<div class="line"></div>
+
+<div class="final">
+	<h3>Diárias</h3>
+	<span class="between">
+		<span>
+			{{ totalDays }} diária(s) x {{ selectedCar.pricePerDay |
+			currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
+		</span>
+		<span> {{ total | currency:'BRL':'symbol':'1.2-2':'pt-BR' }} </span>
+	</span>
+	@if(hasInsurance){
+	<h3>Pacote Completo</h3>
+	<span class="between">
+		<span>
+			{{ totalDays }} diária(s) x {{ selectedCar.pricePerDay / 10 |
+			currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
+		</span>
+		<span>
+			{{ (total * 0.1) | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
+		</span>
+	</span>
+	}
+	<h3>Taxa de Aluguel</h3>
+	<span class="between">
+		<span>12,00%</span>
+		<span>{{ total * 0.12 }}</span>
+	</span>
+</div>
+
+<div>
+	<span>Valor Total Previsto</span>
+	<span>{{ total | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</span>
+</div>

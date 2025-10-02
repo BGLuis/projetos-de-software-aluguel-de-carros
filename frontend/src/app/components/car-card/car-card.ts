@@ -1,5 +1,5 @@
 import { CurrencyPipe } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, HostBinding, Input } from '@angular/core';
 import { LucideAngularModule } from 'lucide-angular';
 
 export type Car = {
@@ -20,4 +20,10 @@ export type Car = {
 })
 export class CarCard {
 	@Input({ required: true }) car!: Car;
+	@Input() expanded = false;
+
+	@HostBinding('style.width')
+	get width() {
+		return this.expanded ? '100%' : '400px';
+	}
 }

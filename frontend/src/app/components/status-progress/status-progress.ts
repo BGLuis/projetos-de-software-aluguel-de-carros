@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-interface Status {
+export interface Status {
   label: string;
   value: boolean;
   editOption?: {
