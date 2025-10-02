@@ -23,12 +23,16 @@ import {
 	Settings,
 	Users,
 } from 'lucide-angular';
+import { provideHttpClient, withFetch } from '@angular/common/http';
 
 export const appConfig: ApplicationConfig = {
 	providers: [
 		provideBrowserGlobalErrorListeners(),
 		provideZonelessChangeDetection(),
 		provideRouter(routes),
+		provideHttpClient(
+			withFetch(),
+		),
 		provideClientHydration(withEventReplay()),
 		importProvidersFrom(
 			LucideAngularModule.pick({
