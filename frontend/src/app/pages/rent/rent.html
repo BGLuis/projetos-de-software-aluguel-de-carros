@@ -1,2 +1,40 @@
 <app-top-page [hasNextButton]="false" />
+
+<!-- Ate escolher a data -->
+@if(true){
+<app-status-progress [statuses]="statuses" />
 <h1>Escolha o melhor carro que te atende</h1>
+<div class="brand-selection grid">
+  <div class="header">
+    <h2>Escolher por Marcas:</h2>
+  </div>
+  <div class="content">
+    @for(brand of [].constructor(10); track $index){
+    <div class="brand-item grid-item">
+      <app-icons name="Hyundai" size="40" />
+      <span>Hyundai</span>
+    </div>
+    }
+  </div>
+</div>
+<div class="types-listing grid">
+  <div class="header">
+    <h2>Escolher por Marcas:</h2>
+  </div>
+  <div class="content">
+    @for(brand of [].constructor(10); track $index){
+    <div class="brand-item grid-item">
+      <app-icons name="Hyundai" size="40" />
+      <span>Hyundai</span>
+    </div>
+    }
+  </div>
+</div>
+<div class="car-list">
+  <div class="content">
+    @for(brand of [].constructor(10); track $index){
+    <app-car-card [car]="carsEX" />
+    }
+  </div>
+</div>
+}
