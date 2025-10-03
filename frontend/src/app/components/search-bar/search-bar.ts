@@ -29,13 +29,42 @@ export class SearchBar {
 
 	getWidthStyle() {
 		return `width: calc((100% - ${this.totalFields * 16}px) / ${
-			this.totalFields
+			this.totalFields === 4 ? 4 : 5
 		})`;
 	}
 
 	navigate() {
-		this.router.navigate(['rent'], {
-			queryParams: this.form.value,
-		});
+		if (this.form.valid === false) {
+			this.form.markAllAsTouched();
+			return;
+		}
+
+		const pickupDate = new Date(this.form.value.pickupDate!);
+		if (pickupDate.getTime() < Date.now()) {
+			this.form.get('pickupDate')?.setErrors({ invalidDate: true });
+		}
+
+		const returnDate = new Date(this.form.value.returnDate!);
+		if (pickupDate.getTime() > returnDate.getTime()) {
+			this.form.get('returnDate')?.setErrors({ invalidDateRange: true });
+			return;
+		}
+
+		const queryParams = {
+			pickupDate: pickupDate.getTime(),
+			returnDate: returnDate.getTime(),
+			pickupLocation: this.form.value.pickupLocation,
+			returnLocation: this.form.value.returnLocation,
+		};
+		if (window.location.pathname === '/rent') {
+			this.router.navigate([], {
+				queryParams,
+				queryParamsHandling: 'merge',
+			});
+		} else {
+			this.router.navigate(['rent'], {
+				queryParams,
+			});
+		}
 	}
 }

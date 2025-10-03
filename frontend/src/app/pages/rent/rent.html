@@ -1,9 +1,11 @@
-<app-top-page [hasNextButton]="false" />
+<app-top-page [hasNextButton]="!statuses()[0].value" />
 
 <!-- Ate escolher a data -->
 @if(true){
-<app-status-progress [statuses]="statuses" />
-@if(!statuses[1].value){
+<app-status-progress [statuses]="statuses()" />
+@if(!statuses()[0].value){
+<div></div>
+} @else if(!statuses()[1].value){
 <h1>Escolha o melhor carro que te atende</h1>
 <div class="brand-selection grid">
 	<div class="header">
@@ -38,7 +40,7 @@
 		}
 	</div>
 </div>
-} @else if(!statuses[2].value) {
+} @else if(!statuses()[2].value) {
 <div class="confirmation">
 	<app-car-card [car]="selectedCar!" [expanded]="true" />
 	<div class="resume">
@@ -51,7 +53,7 @@
 		<button (click)="confirmReservation()">Continue -></button>
 	</div>
 </div>
-} @else if(!statuses[3].value) {
+} @else if(!statuses()[3].value) {
 <div class="payment">
 	<app-payment [user]="user" />
 	<div class="resume">
@@ -65,7 +67,9 @@
 	</div>
 </div>
 } @else {
-<h1>Reserva Realizada!</h1>
-<span>Os dados da reserva serão enviados para o seu e-mail.</span>
-<span>{{ user.email }}</span>
+<div class="sucessful">
+	<h1>Reserva Realizada!</h1>
+	<span>Os dados da reserva serão enviados para o seu e-mail.</span>
+	<span>{{ user.email }}</span>
+</div>
 } }

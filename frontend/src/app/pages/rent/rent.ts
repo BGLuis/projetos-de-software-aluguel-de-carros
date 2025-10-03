@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Signal, signal } from '@angular/core';
 import { TopPage } from '#app/components/top-page/top-page';
 import {
 	Status,
@@ -50,7 +50,7 @@ const choices = [
 })
 export class Rent {
 	choices = choices;
-	statuses: Status[] = [
+	statuses: Signal<Status[]> = signal([
 		{
 			label: 'Local e Data',
 			value: true,
@@ -83,7 +83,7 @@ export class Rent {
 				action: () => this.toggle(3, false),
 			},
 		},
-	];
+	]);
 
 	carsEX: Car = {
 		imageURL: 'cars/bmw-m4.png',
@@ -116,11 +116,11 @@ export class Rent {
 	selectedCar: Car | null = null;
 
 	toggle(index: number, current: boolean = true) {
-		for (let i = 0; i < this.statuses.length; i++) {
-			this.statuses[i].value = i <= index ? true : false;
+		for (let i = 0; i < this.statuses().length; i++) {
+			this.statuses()[i].value = i <= index ? true : false;
 		}
 		if (current !== undefined) {
-			this.statuses[index].value = current;
+			this.statuses()[index].value = current;
 		}
 	}
 
