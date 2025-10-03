@@ -62,14 +62,26 @@ export class Rent {
 		{
 			label: 'Escolha do Carro',
 			value: false,
+			editOption: {
+				label: 'Editar',
+				action: () => this.toggle(1, false),
+			},
 		},
 		{
 			label: 'Tarifas e Adicionais',
 			value: false,
+			editOption: {
+				label: 'Editar',
+				action: () => this.toggle(2, false),
+			},
 		},
 		{
 			label: 'Dados Cadastrais',
 			value: false,
+			editOption: {
+				label: 'Editar',
+				action: () => this.toggle(3, false),
+			},
 		},
 	];
 
@@ -91,6 +103,10 @@ export class Rent {
 			ddd: '31',
 			number: '91234-5678',
 		},
+		document: {
+			type: 'CPF',
+			number: '123.456.789-09',
+		},
 	};
 
 	pickupDate: Date = new Date('2024-07-01T10:00:00');
@@ -99,21 +115,29 @@ export class Rent {
 
 	selectedCar: Car | null = null;
 
+	toggle(index: number, current: boolean = true) {
+		for (let i = 0; i < this.statuses.length; i++) {
+			this.statuses[i].value = i <= index ? true : false;
+		}
+		if (current !== undefined) {
+			this.statuses[index].value = current;
+		}
+	}
+
 	editLocalEData() {
-		// Lógica para editar local e data
-		console.log('Editando Local e Data');
+		this.toggle(0, false);
 	}
 
 	selectCar(car: Car) {
-		this.statuses[1].value = true;
+		this.toggle(1);
 		this.selectedCar = car;
 	}
 
 	confirmReservation() {
-		this.statuses[2].value = true;
+		this.toggle(2);
 	}
 
 	reserve() {
-		this.statuses[3].value = true;
+		this.toggle(3);
 	}
 }

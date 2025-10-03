@@ -6,4 +6,8 @@ export type User = {
 		ddd: string;
 		number: string;
 	};
+	document: {
+		type: 'RG' | 'CPF' | 'CNH';
+		number: string;
+	};
 };

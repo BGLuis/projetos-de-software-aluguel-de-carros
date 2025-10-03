@@ -26,4 +26,9 @@ export class CarCard {
 	get width() {
 		return this.expanded ? '100%' : '400px';
 	}
+
+	@HostBinding('style.height')
+	get height() {
+		return this.expanded ? '100%' : '400px';
+	}
 }

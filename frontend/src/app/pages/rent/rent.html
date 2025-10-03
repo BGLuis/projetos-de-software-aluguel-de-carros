@@ -54,13 +54,15 @@
 } @else if(!statuses[3].value) {
 <div class="payment">
 	<app-payment [user]="user" />
-	<app-resume
-		[pickupDate]="pickupDate"
-		[returnDate]="returnDate"
-		[selectedCar]="selectedCar!"
-		[hasInsurance]="hasInsurance"
-	/>
-	<button (click)="reserve()">Reservar -></button>
+	<div class="resume">
+		<app-resume
+			[pickupDate]="pickupDate"
+			[returnDate]="returnDate"
+			[selectedCar]="selectedCar!"
+			[hasInsurance]="hasInsurance"
+		/>
+		<button (click)="reserve()">Reservar -></button>
+	</div>
 </div>
 } @else {
 <h1>Reserva Realizada!</h1>

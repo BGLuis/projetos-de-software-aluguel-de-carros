@@ -1,65 +1,78 @@
 app-car-background {
-  height: calc(100% - 360px);
+	height: calc(100% - 360px);
 }
 
 h1 {
-  font-size: 2.2rem;
-  font-weight: bold;
-  margin: 3rem 0;
-  text-align: center;
+	font-size: 2.2rem;
+	font-weight: bold;
+	margin: 3rem 0;
+	text-align: center;
 }
 
 .grid {
-  max-width: 1440px;
-  margin: 2rem auto;
+	max-width: 1440px;
+	margin: 2rem auto;
 
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-  }
+	.header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 1rem;
+	}
 
-  .content {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, 160px);
-    justify-content: center;
-    grid-auto-rows: auto;
-    grid-auto-flow: row dense;
-    align-items: start;
-    gap: 1rem;
-  }
+	.content {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, 160px);
+		justify-content: center;
+		grid-auto-rows: auto;
+		grid-auto-flow: row dense;
+		align-items: start;
+		gap: 1rem;
+	}
 
-  .grid-item {
-    background-color: #0f0f0f0d;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border-radius: 8px;
-    padding: 1rem 1.5rem;
-  }
+	.grid-item {
+		background-color: #0f0f0f0d;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		border-radius: 8px;
+		padding: 1rem 1.5rem;
+	}
 }
 
 .car-list {
-  padding: 4rem 2rem;
-  background: #f3f3f3;
+	padding: 4rem 2rem;
+	background: #f3f3f3;
 
-  .content {
-    max-width: 1440px;
-    margin: 2rem auto;
-    display: grid;
-    grid-template-columns: repeat(2, 400px);
-    gap: 3rem;
-    justify-content: center;
-    align-items: start;
-  }
+	.content {
+		max-width: 1440px;
+		margin: 2rem auto;
+		display: grid;
+		grid-template-columns: repeat(2, 400px);
+		gap: 3rem;
+		justify-content: center;
+		align-items: start;
+	}
 }
 
-.confirmation {
-    display: flex;
-    flex-direction: row;
+.resume {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+
+	button {
+		width: 100%;
+	}
 }
 
+.confirmation,
 .payment {
-    
+	max-width: 1200px;
+	padding: 40px;
+	margin: 0 auto;
+	gap: 24px;
+	margin-top: 80px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
 }

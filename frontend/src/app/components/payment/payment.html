@@ -1,17 +1,28 @@
 <h2>Dados Pessoais</h2>
 <h3>Confira seus dados para efetuar a reserva</h3>
 
-<span>NOME COMPLETO</span>
-<span>{{ user.name }}</span>
+<div class="row">
+	<span>NOME COMPLETO</span>
+	<span class="name">{{ user.name }}</span>
+</div>
 
-<span>EMAIL</span>
-<span>{{ user.email }}</span>
+<div class="row">
+	<span>EMAIL</span>
+	<span class="email">{{ user.email }}</span>
+</div>
 
-<div>
+<div class="phone">
 	<span>DDI</span>
 	<span>DDD</span>
 	<span>CELULAR</span>
 	<span>{{ user.phone.ddi }}</span>
 	<span>{{ user.phone.ddd }}</span>
 	<span>{{ user.phone.number }}</span>
+</div>
+
+<div class="document">
+	<span>DOCUMENTO</span>
+	<span>NÚMERO</span>
+	<span>{{ user.document.type }}</span>
+	<span>{{ user.document.number }}</span>
 </div>

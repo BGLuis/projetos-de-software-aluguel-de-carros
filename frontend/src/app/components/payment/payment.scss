@@ -1,0 +1,26 @@
+:host {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+}
+
+.row {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.name {
+	text-transform: uppercase;
+}
+
+.phone {
+	display: grid;
+	grid-template: 1fr 1fr / 1fr 1fr 10fr;
+}
+
+.document {
+	display: grid;
+	grid-template: 1fr 1fr / 1fr 5fr;
+	gap: 8px;
+}
